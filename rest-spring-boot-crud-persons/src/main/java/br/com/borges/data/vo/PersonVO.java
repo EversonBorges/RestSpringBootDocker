@@ -2,14 +2,18 @@ package br.com.borges.data.vo;
 
 import java.io.Serializable;
 
+//@JsonPropertyOrder({"firstName","lastName","id","address","gender"})
 public class PersonVO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
 	private Long id;
+	//@JsonProperty("Nome")
 	private String firstName;
+	//@JsonProperty("Sobrenome")
 	private String lastName;
 	private String address;
+	//@JsonIgnore
 	private String gender;
 
 	public PersonVO() {
@@ -104,4 +108,6 @@ public class PersonVO implements Serializable{
 			return false;
 		return true;
 	}
+
+	
 }

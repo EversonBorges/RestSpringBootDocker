@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.borges.data.model.Person;
+import br.com.borges.data.vo.PersonVO;
 import br.com.borges.services.PersonServices;
 
 @RestController
@@ -23,28 +23,30 @@ public class PersonController {
 	@Autowired
 	private PersonServices services;
 	
-	@GetMapping
-	public List<Person> findByAll(){
+	@GetMapping(produces = {"application/json","application/xml"})
+	public List<PersonVO> findByAll(){
 		
 		return services.findAll();
 	}
 	
-	@GetMapping("/{id}")
-	public Person findById(@PathVariable(value = "id") Long id){
+	@GetMapping(value = "/{id}",produces = {"application/json","application/xml"})
+	public PersonVO findById(@PathVariable(value = "id") Long id){
 		
 		return services.findById(id);
 	}
 	
-	@PostMapping
-	public Person create(@RequestBody Person person){
+	@PostMapping(produces = {"application/json","application/xml"},
+				 consumes = {"application/json","application/xml"})
+	public PersonVO create(@RequestBody PersonVO PersonVO){
 		
-		return services.create(person);
+		return services.create(PersonVO);
 	}
 	
-	@PutMapping
-	public Person update(@RequestBody Person person){
+	@PutMapping(produces = {"application/json","application/xml"},
+			    consumes = {"application/json","application/xml"})
+	public PersonVO update(@RequestBody PersonVO PersonVO){
 		
-		return services.update(person);
+		return services.update(PersonVO);
 	}
 	
 	@DeleteMapping("/{id}")

@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.borges.converter.DozerConverter;
 import br.com.borges.data.model.Person;
+import br.com.borges.data.vo.PersonVO;
 import br.com.borges.exception.ResourceNotFoundException;
 import br.com.borges.repository.PersonRepository;
 
@@ -16,22 +18,26 @@ public class PersonServices {
 	@Autowired
 	private PersonRepository repository;
 	
-	public Person create(Person person) {
-		return repository.save(person);
+	public PersonVO create(PersonVO person) {
+		var entity = DozerConverter.parseObject(person, Person.class);
+		var vo = DozerConverter.parseObject(repository.save(entity), PersonVO.class);
+		return vo;
 	}
 	
-	public List<Person> findAll() {
-		return repository.findAll();
+	public List<PersonVO> findAll() {
+		
+		return DozerConverter.parseListObjects(repository.findAll(), PersonVO.class);
 	}
 	
-	public Person findById(Long id) {
-		return repository.findById(id).
+	public PersonVO findById(Long id) {
+		var entity =  repository.findById(id).
 				orElseThrow(() -> new ResourceNotFoundException("Não há dados para o Id " + id));
+		return DozerConverter.parseObject(entity, PersonVO.class);
 	}
 
-	public Person update(Person person) {
+	public PersonVO update(PersonVO person) {
 		
-		Person entity = repository.findById(person.getId())
+		var entity = repository.findById(person.getId())
 				.orElseThrow(() -> new ResourceNotFoundException("Não há dados para o Id " + person.getId()));
 		
 		entity.setFirstName(person.getFirstName());
@@ -39,7 +45,8 @@ public class PersonServices {
 		entity.setAddress(person.getAddress());
 		entity.setGender(person.getGender());
 		
-		return repository.save(entity);
+		var vo = DozerConverter.parseObject(repository.save(entity), PersonVO.class);
+		return vo;
 	}
 	
 	public void delete(Long id) {
