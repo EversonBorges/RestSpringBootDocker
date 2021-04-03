@@ -2,12 +2,17 @@ package br.com.borges.data.vo;
 
 import java.io.Serializable;
 
+import org.springframework.hateoas.ResourceSupport;
+
+import com.github.dozermapper.core.Mapping;
+
 //@JsonPropertyOrder({"firstName","lastName","id","address","gender"})
-public class PersonVO implements Serializable{
+public class PersonVO extends ResourceSupport implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	private Long id;
+	@Mapping("id")
+	private Long idPerson;
 	//@JsonProperty("Nome")
 	private String firstName;
 	//@JsonProperty("Sobrenome")
@@ -20,12 +25,12 @@ public class PersonVO implements Serializable{
 		
 	}
 
-	public Long getId() {
-		return id;
+	public Long getIdPerson() {
+		return idPerson;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdPerson(Long idPerson) {
+		this.idPerson = idPerson;
 	}
 
 	public String getFirstName() {
@@ -67,7 +72,7 @@ public class PersonVO implements Serializable{
 		result = prime * result + ((address == null) ? 0 : address.hashCode());
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((gender == null) ? 0 : gender.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((idPerson == null) ? 0 : idPerson.hashCode());
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		return result;
 	}
@@ -96,10 +101,10 @@ public class PersonVO implements Serializable{
 				return false;
 		} else if (!gender.equals(other.gender))
 			return false;
-		if (id == null) {
-			if (other.id != null)
+		if (idPerson == null) {
+			if (other.idPerson != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!idPerson.equals(other.idPerson))
 			return false;
 		if (lastName == null) {
 			if (other.lastName != null)
@@ -109,5 +114,4 @@ public class PersonVO implements Serializable{
 		return true;
 	}
 
-	
 }

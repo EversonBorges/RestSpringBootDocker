@@ -16,68 +16,64 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.borges.data.vo.PersonVO;
-import br.com.borges.services.PersonServices;
+import br.com.borges.data.vo.BookVO;
+import br.com.borges.services.BookServices;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-//@Api(value = "Person Endpoint",description = "Controller para pessoas",tags = {"Person Endpoint"})
-//@CrossOrigin
-@Api(tags = "Person Endpoint")
+@Api(tags = "Book Endpoint")
 @RestController
-@RequestMapping("/person")
-public class PersonController {
+@RequestMapping("/book")
+public class BookController {
 
 	@Autowired
-	private PersonServices services;
+	private BookServices services;
 
-	@ApiOperation(value = "Find All Peoples")
+	@ApiOperation(value = "Find all book")
 	@GetMapping(produces = { "application/json", "application/xml", "application/x-yaml" })
-	public List<PersonVO> findByAll() {
+	public List<BookVO> findByAll() {
 
-		List<PersonVO> persons =  services.findAll();
-		persons.stream()
+		List<BookVO> books =  services.findAll();
+		books.stream()
 			.forEach(p -> p.add(
-				linkTo(methodOn(PersonController.class).findById(p.getIdPerson())).withSelfRel()));
+				linkTo(methodOn(BookController.class).findById(p.getIdBook())).withSelfRel()));
 		
-		return persons;
+		return books;
 	}
 
-	//@CrossOrigin(origins = "http://localhost:8080")
-	@ApiOperation(value = "Find people by Id")
+	@ApiOperation(value = "Find book by Id")
 	@GetMapping(value = "/{id}", produces = { "application/json", "application/xml", "application/x-yaml" })
-	public PersonVO findById(@PathVariable(value = "id") Long id) {
+	public BookVO findById(@PathVariable(value = "id") Long id) {
 
-		PersonVO personVO = services.findById(id);
-		personVO.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
+		BookVO bookVO = services.findById(id);
+		bookVO.add(linkTo(methodOn(BookController.class).findById(id)).withSelfRel());
 
-		return personVO;
+		return bookVO;
 	}
 
-	//@CrossOrigin(origins = {"http://localhost:8080","http://www.borges.com.br"})
-	@ApiOperation(value = "Create a new people")
+	@ApiOperation(value = "Create a new book")
 	@PostMapping(produces = { "application/json", "application/xml", "application/x-yaml" }, consumes = {
 			"application/json", "application/xml", "application/x-yaml" })
-	public PersonVO create(@RequestBody PersonVO PersonVO) {
+	public BookVO create(@RequestBody BookVO reqBookVO) {
 
-		PersonVO personVO =  services.create(PersonVO);
-		personVO.add(linkTo(methodOn(PersonController.class).findById(personVO.getIdPerson())).withSelfRel());
+		BookVO bookVO =  services.create(reqBookVO);
+		bookVO.add(linkTo(methodOn(BookController.class).findById(bookVO.getIdBook())).withSelfRel());
 
-		return personVO;
+		return bookVO;
 	}
 
-	@ApiOperation(value = "Update a People")
+	@ApiOperation(value = "Update a Book" )
 	@PutMapping(produces = { "application/json", "application/xml", "application/x-yaml" }, consumes = {
 			"application/json", "application/xml", "application/x-yaml" })
-	public PersonVO update(@RequestBody PersonVO PersonVO) {
+	public BookVO update(@RequestBody BookVO reqBookVO) {
 
-		PersonVO personVO =  services.update(PersonVO);
-		personVO.add(linkTo(methodOn(PersonController.class).findById(personVO.getIdPerson())).withSelfRel());
+		BookVO bookVO =  services.update(reqBookVO);
+		bookVO.add(linkTo(methodOn(BookController.class).findById(bookVO.getIdBook())).withSelfRel());
 
-		return personVO;
+		return bookVO;
 	}
 
-	@ApiOperation(value = "Delete a People")
+	@ApiOperation(value = "Delete a book")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
 
