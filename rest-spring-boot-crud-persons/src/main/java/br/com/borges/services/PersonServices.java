@@ -1,9 +1,10 @@
 package br.com.borges.services;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.borges.converter.DozerConverter;
 import br.com.borges.data.model.Person;
@@ -24,9 +25,23 @@ public class PersonServices {
 		return vo;
 	}
 	
-	public List<PersonVO> findAll() {
+	public Page<PersonVO> findPersonByNames(String firstName, Pageable pageable) {
 		
-		return DozerConverter.parseListObjects(repository.findAll(), PersonVO.class);
+		var page = repository.findPersonByNames(firstName,pageable);
+		return page.map(this::converToPersonVO);
+			
+	}
+	
+	public Page<PersonVO> findAll(Pageable pageable) {
+		
+		var page = repository.findAll(pageable);
+		
+		return page.map(this::converToPersonVO);
+			
+	}
+	
+	private PersonVO converToPersonVO(Person entity) {
+		return DozerConverter.parseObject(entity, PersonVO.class);
 	}
 	
 	public PersonVO findById(Long id) {
@@ -47,6 +62,14 @@ public class PersonServices {
 		
 		var vo = DozerConverter.parseObject(repository.save(entity), PersonVO.class);
 		return vo;
+	}
+	
+	@Transactional
+	public PersonVO disablePerson(Long id) {
+		repository.disablePersons(id);
+		var entity =  repository.findById(id).
+				orElseThrow(() -> new ResourceNotFoundException("Não há dados para o Id " + id));
+		return DozerConverter.parseObject(entity, PersonVO.class);
 	}
 	
 	public void delete(Long id) {
