@@ -1,10 +1,12 @@
-language:bash
+language: bash
 services: docker
 before_install:
   - cd rest-spring-boot-crud-persons/
-  - echo "Estamos na Pata do docker!"
+  - echo "Estamos na Pasta do docker!"
 script:
+  - echo "Inicio Comando Docker"
   - docker-compose build
+  - echo "Fim Comando Docker"
 before_deploy:
   - echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
 deploy:
