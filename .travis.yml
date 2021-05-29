@@ -10,7 +10,7 @@ script:
 before_deploy:
   - echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
 deploy:
-  provider:script
+  provider: script
   script:
     docker push everborges/rest-spring-boot;
     docker push everborges/mysql-rest-spring-boot;
