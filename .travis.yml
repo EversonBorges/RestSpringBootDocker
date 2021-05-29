@@ -3,11 +3,11 @@ services: docker
 before_install:
   - cd rest-spring-boot-crud-persons/
   - echo "Estamos na Pasta do docker!"
-script:
   - echo "Inicio Comando Docker"
+script:
   - docker-compose build
-  - echo "Fim Comando Docker"
 before_deploy:
+  - echo "Fim Comando Docker"
   - echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
 deploy:
   provider: script
